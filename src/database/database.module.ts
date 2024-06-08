@@ -19,7 +19,7 @@ import { MongoClient } from 'mongodb';
                 );
 
                 return client.db(
-                    configService.getOrThrow('DATABASE_URL', { infer: true }),
+                    configService.getOrThrow('DATABASE_NAME', { infer: true }),
                 );
             },
             inject: [ConfigService],
