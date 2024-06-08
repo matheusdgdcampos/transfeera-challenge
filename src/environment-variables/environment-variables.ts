@@ -13,6 +13,9 @@ export class EnvironmentVariables {
 
     @IsString()
     DATABASE_URL: string;
+
+    @IsString()
+    DATABASE_NAME: string;
 }
 
 export function validate(config: Record<string, unknown>) {
