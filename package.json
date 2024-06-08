@@ -8,6 +8,7 @@
     "scripts": {
         "build": "nest build",
         "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+        "seed": "node ./seeders/receivers.seed.cjs",
         "start": "nest start",
         "start:dev": "nest start --watch",
         "start:debug": "nest start --debug --watch",
@@ -29,6 +30,7 @@
         "cache-manager": "^5.6.1",
         "class-transformer": "^0.5.1",
         "class-validator": "^0.14.1",
+        "dotenv": "^16.4.5",
         "mongodb": "^6.7.0",
         "reflect-metadata": "^0.2.0",
         "rxjs": "^7.8.1"
