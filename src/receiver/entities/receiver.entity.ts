@@ -11,6 +11,11 @@ export enum PIX_KEY_TYPE {
     RANDOM = 'RANDOM',
 }
 
+export enum RECEIVER_STATUS {
+    VALIDADO = 'VALIDADO',
+    RASCUNHO = 'RASCUNHO',
+}
+
 class Document {
     type: DOCUMENT_TYPE;
     value: string;
@@ -25,6 +30,7 @@ export class Receiver {
     id: string;
     name: string;
     email: string;
+    status: RECEIVER_STATUS;
     document: Document;
     pixKey: PixKey;
 }

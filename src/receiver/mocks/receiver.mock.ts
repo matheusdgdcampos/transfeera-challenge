@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import {
     DOCUMENT_TYPE,
     PIX_KEY_TYPE,
+    RECEIVER_STATUS,
     Receiver,
 } from '../entities/receiver.entity';
 
@@ -46,6 +47,7 @@ export const createReceiverMock = (): Receiver => {
     return {
         id: faker.database.mongodbObjectId(),
         name: faker.person.fullName(),
+        status: getRandomEnum(RECEIVER_STATUS),
         email: faker.internet.email(),
         document: {
             type: getRandomEnum(DOCUMENT_TYPE),
