@@ -5,6 +5,7 @@ import {
     validate,
     EnvironmentVariables,
 } from './environment-variables/environment-variables';
+import { ReceiverModule } from './receiver/receiver.module';
 
 @Module({
     imports: [
@@ -20,6 +21,7 @@ import {
             }),
             inject: [ConfigService],
         }),
+        ReceiverModule,
     ],
 })
 export class AppModule {}
