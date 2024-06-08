@@ -1,15 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ReceiverService } from './receiver.service';
 import { ReceiverController } from './receiver.controller';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Receiver, ReceiverSchema } from './entities/receiver.entity';
+import { DatabaseModule } from '@/database/database.module';
 
 @Module({
-    imports: [
-        MongooseModule.forFeature([
-            { name: Receiver.name, schema: ReceiverSchema },
-        ]),
-    ],
+    imports: [DatabaseModule],
     controllers: [ReceiverController],
     providers: [ReceiverService],
 })

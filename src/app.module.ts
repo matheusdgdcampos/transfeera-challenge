@@ -1,10 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
-import {
-    validate,
-    EnvironmentVariables,
-} from './environment-variables/environment-variables';
+import { ConfigModule } from '@nestjs/config';
+import { validate } from './environment-variables/environment-variables';
 import { ReceiverModule } from './receiver/receiver.module';
 
 @Module({
@@ -12,14 +8,6 @@ import { ReceiverModule } from './receiver/receiver.module';
         ConfigModule.forRoot({
             validate,
             isGlobal: true,
-        }),
-        MongooseModule.forRootAsync({
-            useFactory: (
-                configService: ConfigService<EnvironmentVariables>,
-            ) => ({
-                uri: configService.getOrThrow('DATABASE_URL'),
-            }),
-            inject: [ConfigService],
         }),
         ReceiverModule,
     ],
