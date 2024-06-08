@@ -1,0 +1,3 @@
+export enum CACHE {
+    RECEIVERS_TOTAL_COUNT = 'RECEIVERS_TOTAL_COUNT',
+}
