@@ -1,18 +1,38 @@
-import { Test, TestingModule } from '@nestjs/testing';
+import { TestingModule } from '@nestjs/testing';
 import { ReceiverService } from './receiver.service';
+import { InMemoryDatabase } from '@/database/in-memory-database';
+import { TestingModuleFactory } from '@/commons/factory/testing-module-factory';
+import { ReceiverRepository } from './repository/receiver.repository';
 
 describe('ReceiverService', () => {
-    let service: ReceiverService;
+    let moduleRef: TestingModule;
+    let db: InMemoryDatabase;
+    let receiverService: ReceiverService;
+    let receiverRepository: ReceiverRepository;
 
-    beforeEach(async () => {
-        const module: TestingModule = await Test.createTestingModule({
-            providers: [ReceiverService],
-        }).compile();
+    beforeAll(async () => {
+        [moduleRef, db] = await TestingModuleFactory();
 
-        service = module.get<ReceiverService>(ReceiverService);
+        receiverService = moduleRef.get(ReceiverService);
+        receiverRepository = moduleRef.get(ReceiverRepository);
+
+        await receiverRepository.createIndexes();
     });
 
-    it('should be defined', () => {
-        expect(service).toBeDefined();
+    afterEach(async () => {
+        await db.clearDatabase();
+    });
+
+    afterAll(async () => {
+        await db.disconnect();
+        await moduleRef.close();
+    });
+
+    it('should be able to find all receivers', async () => {
+        const receivers = await receiverService.findAll();
+        expect(receivers).toHaveProperty('metadata');
+        expect(receivers).toHaveProperty('data');
+        expect(Array.isArray(receivers.data)).toBeTruthy();
+        expect(receivers.data.length).toBe(10);
     });
 });
