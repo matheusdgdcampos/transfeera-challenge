@@ -12,8 +12,8 @@ export enum PIX_KEY_TYPE {
 }
 
 export enum RECEIVER_STATUS {
-    VALIDADO = 'VALIDADO',
-    RASCUNHO = 'RASCUNHO',
+    VALIDATED = 'VALIDATED',
+    DRAFT = 'DRAFT',
 }
 
 class Document {
