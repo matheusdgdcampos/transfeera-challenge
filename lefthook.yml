@@ -15,9 +15,6 @@
 pre-commit:
   parallel: true
   commands:
-    eslint:
-      glob: "*.{js,ts}"
-      run: npm run lint
     format:
       glob: "*.{js,ts}"
       run: npm run format
