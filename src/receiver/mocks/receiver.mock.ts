@@ -1,5 +1,4 @@
 import { faker } from '@faker-js/faker';
-import { Types } from 'mongoose';
 import {
     DOCUMENT_TYPE,
     PIX_KEY_TYPE,
