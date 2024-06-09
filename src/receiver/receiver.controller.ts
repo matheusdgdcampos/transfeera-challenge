@@ -3,10 +3,12 @@ import {
     Get,
     Post,
     Body,
-    Patch,
     Param,
     Delete,
     Query,
+    HttpCode,
+    HttpStatus,
+    Put,
 } from '@nestjs/common';
 import { ReceiverService } from './receiver.service';
 import { CreateReceiverDto } from './dto/create-receiver.dto';
@@ -31,7 +33,7 @@ export class ReceiverController {
         return this.receiverService.findOne(+id);
     }
 
-    @Patch(':id')
+    @Put(':id')
     update(
         @Param('id') id: string,
         @Body() updateReceiverDto: UpdateReceiverDto,
@@ -39,8 +41,9 @@ export class ReceiverController {
         return this.receiverService.update(+id, updateReceiverDto);
     }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.receiverService.remove(+id);
+    @Delete()
+    @HttpCode(HttpStatus.NO_CONTENT)
+    remove(@Body('ids') ids: string[]) {
+        return this.receiverService.remove(ids);
     }
 }
