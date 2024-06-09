@@ -3,6 +3,7 @@ import { ReceiverService } from './receiver.service';
 import { InMemoryDatabase } from '@/database/in-memory-database';
 import { TestingModuleFactory } from '@/commons/factory/testing-module-factory';
 import { ReceiverRepository } from './repository/receiver.repository';
+import { createReceiverMock } from './mocks/receiver.mock';
 
 describe('ReceiverService', () => {
     let moduleRef: TestingModule;
@@ -29,6 +30,19 @@ describe('ReceiverService', () => {
     });
 
     it('should be able to find all receivers', async () => {
+        // TODO teste falhando
+        await Promise.all([
+            receiverService.create(createReceiverMock()),
+            receiverService.create(createReceiverMock()),
+            receiverService.create(createReceiverMock()),
+            receiverService.create(createReceiverMock()),
+            receiverService.create(createReceiverMock()),
+            receiverService.create(createReceiverMock()),
+            receiverService.create(createReceiverMock()),
+            receiverService.create(createReceiverMock()),
+            receiverService.create(createReceiverMock()),
+            receiverService.create(createReceiverMock()),
+        ]);
         const receivers = await receiverService.findAll();
         expect(receivers).toHaveProperty('metadata');
         expect(receivers).toHaveProperty('data');
