@@ -1,10 +1,6 @@
 import { faker } from '@faker-js/faker';
-import {
-    DOCUMENT_TYPE,
-    PIX_KEY_TYPE,
-    RECEIVER_STATUS,
-    Receiver,
-} from '../entities/receiver.entity';
+import { DOCUMENT_TYPE, PIX_KEY_TYPE } from '../entities/receiver.entity';
+import { CreateReceiverDto } from '../dto/create-receiver.dto';
 
 function getRandomEnum<T = any>(enumObj: T): T[keyof T] {
     const objectValues = Object.values(enumObj);
@@ -12,7 +8,7 @@ function getRandomEnum<T = any>(enumObj: T): T[keyof T] {
     return objectValues[index];
 }
 
-export const createReceiverMock = (): Receiver => {
+export const createReceiverMock = (): CreateReceiverDto => {
     const documentType = getRandomEnum(DOCUMENT_TYPE);
     const cpf = faker.helpers.fromRegExp(
         /^[0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2}$/,
@@ -53,9 +49,7 @@ export const createReceiverMock = (): Receiver => {
     }
 
     return {
-        id: faker.database.mongodbObjectId(),
         name: faker.person.fullName(),
-        status: getRandomEnum(RECEIVER_STATUS),
         email: faker.internet.email(),
         document: {
             type: getRandomEnum(DOCUMENT_TYPE),
