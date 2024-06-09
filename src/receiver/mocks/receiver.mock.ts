@@ -5,6 +5,7 @@ import {
     RECEIVER_STATUS,
     Receiver,
 } from '../entities/receiver.entity';
+import { GenerateDocument } from './generate-document.mock';
 
 function getRandomEnum<T = any>(enumObj: T): T[keyof T] {
     const objectValues = Object.values(enumObj);
@@ -14,8 +15,8 @@ function getRandomEnum<T = any>(enumObj: T): T[keyof T] {
 
 export const createReceiverMock = (): Receiver => {
     const documentType = getRandomEnum(DOCUMENT_TYPE);
-    const cpf = faker.string.numeric({ length: { min: 11, max: 11 } });
-    const cnpj = faker.string.numeric({ length: { min: 14, max: 14 } });
+    const cpf = GenerateDocument.cpf();
+    const cnpj = GenerateDocument.cnpj();
     const documentValue = documentType === DOCUMENT_TYPE.CPF ? cpf : cnpj;
     const pixKeyType = getRandomEnum(PIX_KEY_TYPE);
     let pixKeyValue: string;
