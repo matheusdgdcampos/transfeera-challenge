@@ -44,10 +44,6 @@ export class CreateReceiverDto {
     @MaxLength(255)
     email: string;
 
-    @IsEnum(RECEIVER_STATUS)
-    @IsOptional()
-    status?: RECEIVER_STATUS = RECEIVER_STATUS.DRAFT;
-
     @ValidateNested()
     @Type(() => DocumentDto)
     document: DocumentDto;

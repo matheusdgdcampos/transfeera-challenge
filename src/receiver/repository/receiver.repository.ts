@@ -1,7 +1,7 @@
 import { PROVIDERS } from '@/commons/enums/providers.enum';
 import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Db, ObjectId } from 'mongodb';
-import { Receiver } from '../entities/receiver.entity';
+import { RECEIVER_STATUS, Receiver } from '../entities/receiver.entity';
 import { CreateReceiverDto } from '../dto/create-receiver.dto';
 
 @Injectable()
@@ -79,7 +79,10 @@ export class ReceiverRepository implements OnModuleInit {
     public async create(
         createReceiverDto: CreateReceiverDto,
     ): Promise<Receiver> {
-        await this.getCollection().insertOne(createReceiverDto);
+        await this.getCollection().insertOne({
+            ...createReceiverDto,
+            status: RECEIVER_STATUS.DRAFT,
+        });
         const receiver = await this.findByName(createReceiverDto.name);
         return receiver;
     }
