@@ -55,12 +55,21 @@ export class ReceiverRepository implements OnModuleInit {
         return collection;
     }
 
-    public async findAll(): Promise<Receiver[]> {
-        const documents = await this.getCollection().find().toArray();
-        const receivers: unknown = documents.map((receiver) => ({
-            ...receiver,
-            id: receiver._id.toString(),
-        }));
+    public async findAll(offset?: number): Promise<Receiver[]> {
+        const pageSize = 10;
+        const skip = offset ?? 1;
+        const documents = await this.getCollection()
+            .find()
+            .limit(pageSize)
+            .skip((skip - 1) * pageSize)
+            .toArray();
+        const receivers: unknown = documents.map((receiver) => {
+            const { _id, ...rest } = receiver;
+            return {
+                ...rest,
+                id: _id.toString(),
+            };
+        });
         return receivers as Receiver[];
     }
 
