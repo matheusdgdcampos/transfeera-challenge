@@ -1,5 +1,4 @@
 import {
-    BadRequestException,
     Inject,
     Injectable,
     Logger,
@@ -12,7 +11,6 @@ import { FindAllReceiversResponse } from './dto/find-all-receivers-response.dto'
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { CACHE } from '@/commons/enums/cache.enum';
-import { PIX_KEY_TYPE } from './entities/receiver.entity';
 
 @Injectable()
 export class ReceiverService {
@@ -24,56 +22,8 @@ export class ReceiverService {
         protected cacheManager: Cache,
     ) {}
 
-    private checkIfValidePixKey(
-        keyType: PIX_KEY_TYPE,
-        keyValue: string,
-    ): boolean {
-        let matcher: RegExp;
-        switch (keyType) {
-            case PIX_KEY_TYPE.CNPJ:
-                matcher =
-                    /^[0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2}$/;
-                return matcher.test(keyValue);
-
-            case PIX_KEY_TYPE.CPF:
-                matcher = /^[0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2}$/;
-                return matcher.test(keyValue);
-
-            case PIX_KEY_TYPE.EMAIL:
-                matcher = /^[a-z0-9+_.-]+@[a-z0-9.-]+$/;
-                return matcher.test(keyValue);
-
-            case PIX_KEY_TYPE.PHONE:
-                matcher = /^((?:\+?55)?)([1-9][0-9])(9[0-9]{8})$/;
-                return matcher.test(keyValue);
-
-            case PIX_KEY_TYPE.RANDOM:
-                matcher =
-                    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-                return matcher.test(keyValue);
-
-            default:
-                return false;
-        }
-    }
-
     public async create(createReceiverDto: CreateReceiverDto) {
         try {
-            if (
-                this.checkIfValidePixKey(
-                    createReceiverDto.pixKey.type,
-                    createReceiverDto.pixKey.value,
-                )
-            ) {
-                this.logger.log(
-                    `No possible register receiver with PIX_KEY_TYPE[${createReceiverDto.pixKey.type}] and PIX_KEY_VALUE[${createReceiverDto.pixKey.value}]`,
-                );
-                throw new BadRequestException({
-                    statusCode: 400,
-                    message: 'Pix key value must be a type PIX key type',
-                });
-            }
-
             await this.receiverRepository.create(createReceiverDto);
         } catch (error) {
             this.logger.error(error);
@@ -81,9 +31,9 @@ export class ReceiverService {
         }
     }
 
-    async findAll(): Promise<FindAllReceiversResponse> {
+    async findAll(page?: number): Promise<FindAllReceiversResponse> {
         try {
-            const result = await this.receiverRepository.findAll();
+            const result = await this.receiverRepository.findAll(page);
             let totalCount = await this.cacheManager.get<number>(
                 CACHE.RECEIVERS_TOTAL_COUNT,
             );
