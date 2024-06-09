@@ -1,6 +1,6 @@
 import { PROVIDERS } from '@/commons/enums/providers.enum';
 import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { Db } from 'mongodb';
+import { Db, ObjectId } from 'mongodb';
 import { Receiver } from '../entities/receiver.entity';
 import { CreateReceiverDto } from '../dto/create-receiver.dto';
 
@@ -78,7 +78,36 @@ export class ReceiverRepository implements OnModuleInit {
         return count;
     }
 
-    public async create(createReceiverDto: CreateReceiverDto) {
+    public async findByName(name: string): Promise<Receiver | null> {
+        const result = await this.getCollection().findOne({
+            name,
+        });
+
+        if (!result) {
+            return null;
+        }
+
+        const { _id, ...rest } = result;
+        const receiver: unknown = {
+            ...rest,
+            id: _id.toString(),
+        };
+
+        return receiver as Receiver;
+    }
+
+    public async create(
+        createReceiverDto: CreateReceiverDto,
+    ): Promise<Receiver> {
         await this.getCollection().insertOne(createReceiverDto);
+        const receiver = await this.findByName(createReceiverDto.name);
+        return receiver;
+    }
+
+    public async delete(ids: string[]) {
+        const parsetIdsToObjectId = ids.map((id) => new ObjectId(id));
+        await this.getCollection().deleteMany({
+            _id: { $in: parsetIdsToObjectId },
+        });
     }
 }
