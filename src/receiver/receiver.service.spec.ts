@@ -30,8 +30,8 @@ describe('ReceiverService', () => {
     });
 
     it('should be able to find all receivers', async () => {
-        // TODO teste falhando
         await Promise.all([
+            receiverService.create(createReceiverMock()),
             receiverService.create(createReceiverMock()),
             receiverService.create(createReceiverMock()),
             receiverService.create(createReceiverMock()),
@@ -44,9 +44,17 @@ describe('ReceiverService', () => {
             receiverService.create(createReceiverMock()),
         ]);
         const receivers = await receiverService.findAll();
+        const receiversPage2 = await receiverService.findAll(2);
         expect(receivers).toHaveProperty('metadata');
         expect(receivers).toHaveProperty('data');
         expect(Array.isArray(receivers.data)).toBeTruthy();
         expect(receivers.data.length).toBe(10);
+        expect(receiversPage2).not.toContainEqual(receivers);
+    });
+
+    it('should be able to create new receiver', async () => {
+        await expect(
+            receiverService.create(createReceiverMock()),
+        ).resolves.not.toThrow();
     });
 });
