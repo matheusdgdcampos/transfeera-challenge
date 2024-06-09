@@ -11,6 +11,7 @@ import { FindAllReceiversResponse } from './dto/find-all-receivers-response.dto'
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
 import { CACHE } from '@/commons/enums/cache.enum';
+import { RECEIVER_STATUS } from './entities/receiver.entity';
 
 @Injectable()
 export class ReceiverService {
@@ -83,8 +84,33 @@ export class ReceiverService {
         }
     }
 
-    update(id: number, updateReceiverDto: UpdateReceiverDto) {
-        return `This action updates a #${id} receiver`;
+    async update(id: string, updateReceiverDto: UpdateReceiverDto) {
+        try {
+            const receiverExists = await this.receiverRepository.findById(id);
+
+            if (!receiverExists) {
+                throw new UnprocessableEntityException();
+            }
+
+            if (receiverExists.status === RECEIVER_STATUS.VALIDATED) {
+                const updatedReceiver = await this.receiverRepository.update(
+                    id,
+                    {
+                        email: updateReceiverDto.email,
+                    },
+                );
+                return updatedReceiver;
+            }
+
+            const updatedReceiver = await this.receiverRepository.update(
+                id,
+                updateReceiverDto,
+            );
+            return updatedReceiver;
+        } catch (error) {
+            this.logger.error(error);
+            throw error;
+        }
     }
 
     async remove(ids: string[]) {

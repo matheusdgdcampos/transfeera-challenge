@@ -3,6 +3,7 @@ import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { Db, ObjectId } from 'mongodb';
 import { RECEIVER_STATUS, Receiver } from '../entities/receiver.entity';
 import { CreateReceiverDto } from '../dto/create-receiver.dto';
+import { UpdateReceiverDto } from '../dto/update-receiver.dto';
 
 @Injectable()
 export class ReceiverRepository implements OnModuleInit {
@@ -100,5 +101,35 @@ export class ReceiverRepository implements OnModuleInit {
             .toArray();
 
         return receivers as Receiver[];
+    }
+
+    public async findById(id: string): Promise<Receiver | null> {
+        const receiverExists = await this.getCollection().findOne({
+            _id: new ObjectId(id),
+        });
+
+        if (!receiverExists) {
+            return null;
+        }
+
+        const { _id, ...rest } = receiverExists;
+        return {
+            ...rest,
+            id: _id.toString(),
+        } as Receiver;
+    }
+
+    public async update(
+        id: string,
+        updateReceiverDto: UpdateReceiverDto,
+    ): Promise<Receiver> {
+        await this.getCollection().updateOne(
+            { _id: new ObjectId(id) },
+            {
+                $set: updateReceiverDto,
+            },
+        );
+        const updatedReceiver = await this.findById(id);
+        return updatedReceiver;
     }
 }

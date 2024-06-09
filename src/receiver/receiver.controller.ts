@@ -38,7 +38,7 @@ export class ReceiverController {
         @Param('id') id: string,
         @Body() updateReceiverDto: UpdateReceiverDto,
     ) {
-        return this.receiverService.update(+id, updateReceiverDto);
+        return this.receiverService.update(id, updateReceiverDto);
     }
 
     @Delete()

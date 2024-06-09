@@ -7,11 +7,7 @@ import {
     MaxLength,
     ValidateNested,
 } from 'class-validator';
-import {
-    DOCUMENT_TYPE,
-    PIX_KEY_TYPE,
-    RECEIVER_STATUS,
-} from '../entities/receiver.entity';
+import { DOCUMENT_TYPE, PIX_KEY_TYPE } from '../entities/receiver.entity';
 import { IsValidPixKey } from '@/commons/decorators/is-valid-pix-key.decorator';
 import { Type } from 'class-transformer';
 
