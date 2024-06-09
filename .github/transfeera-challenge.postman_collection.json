@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "8b96508e-2c31-4ace-8316-1d8d1d82bf32",
+		"name": "transfeera-challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10160463"
+	},
+	"item": [
+		{
+			"name": "Find all receivers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/receiver?page=1",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"receiver"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create new receiver",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Jhon Doe\",\n    \"email\": \"jhon.doe@example.com\",\n    \"document\": {\n        \"type\": \"CNPJ\",\n        \"value\": \"27521442000130\"\n    },\n    \"pixKey\": {\n        \"type\": \"CNPJ\",\n        \"value\": \"27521442000130\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/receiver",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"receiver"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete receivers",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ids\": [\"6665b09c4dcb9ac0dea7b4db\", \"6665e1f8f9bcf54f29aa8b6d\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/receiver",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"receiver"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search receiver",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/receiver/search?search=jhon",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"receiver",
+						"search"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "jhon"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update receiver",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Jhon Doe\",\n    \"email\": \"example@example.com.br\",\n    \"document\": {\n        \"type\": \"CNPJ\",\n        \"value\": \"27521442000130\"\n    },\n    \"pixKey\": {\n        \"type\": \"CNPJ\",\n        \"value\": \"27521442000130\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/receiver/6665ae9b12d8c9974e06a7c0",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"receiver",
+						"6665ae9b12d8c9974e06a7c0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
