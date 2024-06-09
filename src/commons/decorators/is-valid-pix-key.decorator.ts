@@ -38,12 +38,10 @@ export function IsValidPixKey(
                         /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
                     if (relatedValue === PIX_KEY_TYPE.CPF) {
-                        console.log('passou no cpf');
                         return cpfMatcher.test(value);
                     }
 
                     if (relatedValue === PIX_KEY_TYPE.CNPJ) {
-                        console.log('passou no cnpj');
                         return cnpjMatcher.test(value);
                     }
 
