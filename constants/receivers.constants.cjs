@@ -57,7 +57,6 @@ const createReceiverMock = () => {
     }
 
     return {
-        id: faker.database.mongodbObjectId(),
         name: faker.person.fullName(),
         status: getRandomEnum(RECEIVER_STATUS),
         email: faker.internet.email(),
