@@ -6,6 +6,7 @@ import {
     Patch,
     Param,
     Delete,
+    Query,
 } from '@nestjs/common';
 import { ReceiverService } from './receiver.service';
 import { CreateReceiverDto } from './dto/create-receiver.dto';
@@ -21,8 +22,8 @@ export class ReceiverController {
     }
 
     @Get()
-    findAll() {
-        return this.receiverService.findAll();
+    findAll(@Query('page') page: number) {
+        return this.receiverService.findAll(page);
     }
 
     @Get(':id')
