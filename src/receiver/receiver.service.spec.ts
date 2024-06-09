@@ -75,4 +75,16 @@ describe('ReceiverService', () => {
         receivers = (await receiverService.findAll()).data;
         expect(receivers.length).toBe(0);
     });
+
+    it('should be able to search receiver', async () => {
+        const createdReceiver =
+            await receiverService.create(createReceiverMock());
+        await receiverService.create(createReceiverMock());
+        const receiversSearchName = await receiverService.search(
+            createdReceiver.name,
+        );
+
+        expect(receiversSearchName.length).toBe(1);
+        expect(receiversSearchName[0].name).toBe(createdReceiver.name);
+    });
 });
