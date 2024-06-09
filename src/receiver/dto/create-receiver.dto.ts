@@ -1,6 +1,7 @@
 import {
     IsEmail,
     IsEnum,
+    IsNumberString,
     IsOptional,
     IsString,
     MaxLength,
@@ -11,12 +12,14 @@ import {
     PIX_KEY_TYPE,
     RECEIVER_STATUS,
 } from '../entities/receiver.entity';
+import { IsValidPixKey } from '@/commons/decorators/is-valid-pix-key.decorator';
+import { Type } from 'class-transformer';
 
 class DocumentDto {
     @IsEnum(DOCUMENT_TYPE)
     type: DOCUMENT_TYPE;
 
-    @IsString()
+    @IsNumberString()
     value: string;
 }
 
@@ -25,6 +28,10 @@ class PixKeyDto {
     type: PIX_KEY_TYPE;
 
     @IsString()
+    @IsValidPixKey('type', {
+        message:
+            'The PIX key is invalid, the key must follow the key type pattern',
+    })
     value: string;
 }
 
@@ -42,8 +49,10 @@ export class CreateReceiverDto {
     status?: RECEIVER_STATUS = RECEIVER_STATUS.DRAFT;
 
     @ValidateNested()
+    @Type(() => DocumentDto)
     document: DocumentDto;
 
     @ValidateNested()
+    @Type(() => PixKeyDto)
     pixKey: PixKeyDto;
 }
