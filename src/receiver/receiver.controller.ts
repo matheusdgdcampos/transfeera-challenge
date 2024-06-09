@@ -19,31 +19,31 @@ export class ReceiverController {
     constructor(private readonly receiverService: ReceiverService) {}
 
     @Post()
-    create(@Body() createReceiverDto: CreateReceiverDto) {
-        return this.receiverService.create(createReceiverDto);
+    async create(@Body() createReceiverDto: CreateReceiverDto) {
+        await this.receiverService.create(createReceiverDto);
     }
 
     @Get()
-    findAll(@Query('page') page: number) {
-        return this.receiverService.findAll(page);
+    async findAll(@Query('page') page: number) {
+        return await this.receiverService.findAll(page);
     }
 
     @Get('search')
-    search(@Query('search') search: string) {
-        return this.receiverService.search(search);
+    async search(@Query('search') search: string) {
+        return await this.receiverService.search(search);
     }
 
     @Put(':id')
-    update(
+    async update(
         @Param('id') id: string,
         @Body() updateReceiverDto: UpdateReceiverDto,
     ) {
-        return this.receiverService.update(id, updateReceiverDto);
+        return await this.receiverService.update(id, updateReceiverDto);
     }
 
     @Delete()
     @HttpCode(HttpStatus.NO_CONTENT)
-    remove(@Body('ids') ids: string[]) {
-        return this.receiverService.remove(ids);
+    async remove(@Body('ids') ids: string[]) {
+        return await this.receiverService.remove(ids);
     }
 }
