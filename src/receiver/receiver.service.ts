@@ -24,7 +24,9 @@ export class ReceiverService {
 
     public async create(createReceiverDto: CreateReceiverDto) {
         try {
-            await this.receiverRepository.create(createReceiverDto);
+            const receiver =
+                await this.receiverRepository.create(createReceiverDto);
+            return receiver;
         } catch (error) {
             this.logger.error(error);
             throw error;
@@ -79,7 +81,12 @@ export class ReceiverService {
         return `This action updates a #${id} receiver`;
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} receiver`;
+    async remove(ids: string[]) {
+        try {
+            await this.receiverRepository.delete(ids);
+        } catch (error) {
+            this.logger.error(error);
+            throw new UnprocessableEntityException();
+        }
     }
 }
