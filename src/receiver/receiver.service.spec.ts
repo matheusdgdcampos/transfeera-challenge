@@ -57,4 +57,22 @@ describe('ReceiverService', () => {
             receiverService.create(createReceiverMock()),
         ).resolves.not.toThrow();
     });
+
+    it('should be able to delete one or many receivers', async () => {
+        const receiverOne = await receiverService.create(createReceiverMock());
+        const receiverTwo = await receiverService.create(createReceiverMock());
+        const receiverThree =
+            await receiverService.create(createReceiverMock());
+
+        await expect(
+            receiverService.remove([receiverOne.id]),
+        ).resolves.not.toThrow();
+        let receivers = (await receiverService.findAll()).data;
+        expect(receivers.length).toBe(2);
+        await expect(
+            receiverService.remove([receiverTwo.id, receiverThree.id]),
+        ).resolves.not.toThrow();
+        receivers = (await receiverService.findAll()).data;
+        expect(receivers.length).toBe(0);
+    });
 });
