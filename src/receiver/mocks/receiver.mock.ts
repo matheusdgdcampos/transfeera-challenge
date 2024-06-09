@@ -5,7 +5,6 @@ import {
     RECEIVER_STATUS,
     Receiver,
 } from '../entities/receiver.entity';
-import { GenerateDocument } from './generate-document.mock';
 
 function getRandomEnum<T = any>(enumObj: T): T[keyof T] {
     const objectValues = Object.values(enumObj);
@@ -15,8 +14,12 @@ function getRandomEnum<T = any>(enumObj: T): T[keyof T] {
 
 export const createReceiverMock = (): Receiver => {
     const documentType = getRandomEnum(DOCUMENT_TYPE);
-    const cpf = GenerateDocument.cpf();
-    const cnpj = GenerateDocument.cnpj();
+    const cpf = faker.helpers.fromRegExp(
+        /^[0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2}$/,
+    );
+    const cnpj = faker.helpers.fromRegExp(
+        /^[0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2}$/,
+    );
     const documentValue = documentType === DOCUMENT_TYPE.CPF ? cpf : cnpj;
     const pixKeyType = getRandomEnum(PIX_KEY_TYPE);
     let pixKeyValue: string;
@@ -35,11 +38,15 @@ export const createReceiverMock = (): Receiver => {
             break;
 
         case PIX_KEY_TYPE.PHONE:
-            pixKeyValue = faker.phone.number();
+            pixKeyValue = faker.helpers.fromRegExp(
+                /^((?:\+?55)?)([1-9][0-9])(9[0-9]{8})$/,
+            );
             break;
 
         case PIX_KEY_TYPE.RANDOM:
-            pixKeyValue = faker.string.alphanumeric(32);
+            pixKeyValue = faker.helpers.fromRegExp(
+                /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+            );
             break;
         default:
             break;
