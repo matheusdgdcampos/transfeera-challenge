@@ -18,36 +18,16 @@ export class ReceiverRepository implements OnModuleInit {
     }
 
     public async createIndexes() {
-        const [nameIndex, statusIndex, pixKeyTypeIndex, pixKeyValueIndex] =
-            await Promise.all([
-                this.getCollection().createIndex(
-                    {
-                        name: 1,
-                    },
-                    { name: 'name_index' },
-                ),
-                this.getCollection().createIndex(
-                    {
-                        status: 1,
-                    },
-                    { name: 'status_index' },
-                ),
-                this.getCollection().createIndex(
-                    {
-                        'pixKey.type': 1,
-                    },
-                    { name: 'pix_key_type_index' },
-                ),
-                this.getCollection().createIndex(
-                    {
-                        'pixKey.value': 1,
-                    },
-                    { name: 'pix_key_value_index' },
-                ),
-            ]);
-        this.logger.log(
-            `ReceiverRepository initialize and create indexes: [${nameIndex}, ${statusIndex}, ${pixKeyTypeIndex}, ${pixKeyValueIndex}]`,
+        await this.getCollection().createIndex(
+            {
+                name: 'text',
+                status: 'text',
+                'pixKey.value': 'text',
+                'pixKey.type': 'text',
+            },
+            { name: 'search_indexes' },
         );
+        this.logger.log(`ReceiverRepository initialize and create indexes`);
     }
 
     private getCollection() {
@@ -109,5 +89,13 @@ export class ReceiverRepository implements OnModuleInit {
         await this.getCollection().deleteMany({
             _id: { $in: parsetIdsToObjectId },
         });
+    }
+
+    public async search(search: string): Promise<Receiver[]> {
+        const receivers: unknown = await this.getCollection()
+            .find({ $text: { $search: search } })
+            .toArray();
+
+        return receivers as Receiver[];
     }
 }

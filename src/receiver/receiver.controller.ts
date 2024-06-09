@@ -28,9 +28,9 @@ export class ReceiverController {
         return this.receiverService.findAll(page);
     }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.receiverService.findOne(+id);
+    @Get('search')
+    search(@Query('search') search: string) {
+        return this.receiverService.search(search);
     }
 
     @Put(':id')

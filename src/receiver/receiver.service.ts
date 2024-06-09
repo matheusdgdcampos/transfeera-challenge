@@ -73,8 +73,14 @@ export class ReceiverService {
         }
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} receiver`;
+    async search(search: string) {
+        try {
+            const receivers = await this.receiverRepository.search(search);
+            return receivers;
+        } catch (error) {
+            this.logger.error(error);
+            throw error;
+        }
     }
 
     update(id: number, updateReceiverDto: UpdateReceiverDto) {
